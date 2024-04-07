@@ -1,0 +1,9 @@
+.idea
+.vscode
+.conf
+.config
+.log
+dist
+releases
+node_modules/
+.env
