@@ -1,3 +1,4 @@
-const app = require('./app');
+import app from './app';
 
-app.listen(8000);
+const PORT = process.env.PORT || 80;
+app.listen(PORT);

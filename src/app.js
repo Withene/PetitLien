@@ -1,6 +1,8 @@
-const express = require('express');
-const cors = require('express');
-const dotenv = require('dotenv');
+import express from 'express';
+import cors from 'cors';
+import * as dotenv from 'dotenv';
+import routes from './routers/routes';
+
 const { syncDatabase } = require('./config/db');
 
 dotenv.config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env' });
@@ -9,8 +11,7 @@ class App {
   constructor() {
     this.express = express();
     this.middlewares();
-    // this.routes();
-
+    this.routes();
     syncDatabase();
   }
 
@@ -20,11 +21,9 @@ class App {
     this.express.use(cors());
   }
 
-  // routes() {
-  //   console.log('rota');
-  // }
+  routes() {
+    this.express.use(routes);
+  }
 }
 
-const appInstance = new App().express;
-
-module.exports = appInstance;
+export default new App().express;
