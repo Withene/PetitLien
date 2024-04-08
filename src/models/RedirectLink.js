@@ -33,6 +33,13 @@ Redirect.associate = (models) => {
     },
     onDelete: 'SET NULL',
   });
+
+  Redirect.belongsTo(models.User, {
+    foreignKey: {
+      field: 'user_id',
+    },
+    onDelete: 'SET NULL',
+  });
 };
 
 Redirect.afterFind((instance, options) => {

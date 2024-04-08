@@ -23,6 +23,9 @@ class App {
     this.express.use(express.json());
     this.express.use(express.urlencoded({ extended: true }));
     this.express.use(cors());
+    process.on('uncaughtException', (e) => {
+      console.info('[uncaughtException] app will be terminated: ', e.stack);
+    });
   }
 
   routes() {
@@ -40,8 +43,22 @@ class App {
         },
         servers: [
           {
-            url: 'http://localhost:80',
+            url: `http://localhost:${process.env.PORT}`,
             description: 'Development server',
+          },
+        ],
+        components: {
+          securitySchemes: {
+            BearerAuth: {
+              type: 'http',
+              scheme: 'bearer',
+              bearerFormat: 'JWT',
+            },
+          },
+        },
+        security: [
+          {
+            BearerAuth: [],
           },
         ],
       },

@@ -7,6 +7,9 @@
     "test": "test",
     "dev": "eslint . --ext .js && nodemon --exec babel-node src/server.js"
   },
+  "engines": {
+    "node": ">=18.0.0 <=20.0.0"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "eslint . --ext .js --fix"
@@ -33,7 +36,8 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.2",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.1",

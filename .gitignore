@@ -7,3 +7,4 @@ dist
 releases
 node_modules/
 .env
+dist
