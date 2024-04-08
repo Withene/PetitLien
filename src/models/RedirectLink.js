@@ -39,8 +39,9 @@ Redirect.afterFind((instance, options) => {
   if (instance && options.hookOptions && options.hookOptions.needIncrementAccess === true) {
     // eslint-disable-next-line no-param-reassign
     instance.numberOfAccess = (instance.numberOfAccess || 0) + 1;
+    return instance.save();
   }
-  return instance.save();
+  return true;
 });
 
 module.exports = Redirect;

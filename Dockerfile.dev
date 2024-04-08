@@ -1,0 +1,32 @@
+
+FROM node:18-slim AS build
+
+WORKDIR /api
+
+COPY ./. ./
+RUN npm i
+RUN rm -rf ./dist && mkdir ./dist
+RUN node_modules/.bin/babel ./src --ignore test.js --out-dir ./dist --copy-files
+RUN rm -rf node_modules
+
+
+COPY ./package* ./
+RUN npm i --only=prod
+
+
+FROM node:18-slim AS runtime
+
+WORKDIR /api
+
+COPY --from=build /api/node_modules ./node_modules
+COPY --from=build /api/dist ./dist
+COPY --from=build /api/pm2-deploy-docker.yml ./pm2-deploy-docker.yml
+
+RUN npm i -g pm2
+
+
+ENV LANG pt_BR.UTF-8
+
+EXPOSE 80
+
+CMD ["pm2-runtime", "pm2-deploy-docker.yml"]

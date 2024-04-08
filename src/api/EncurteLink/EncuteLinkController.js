@@ -7,7 +7,6 @@ dotenv.config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env' });
 class EncurteLinkController {
   async create(req, res) {
     const data = req.body;
-    const port = process.env.PORT || 80;
     const { protocol, hostname } = req;
 
     const { error } = schema.validate(data);
@@ -21,7 +20,7 @@ class EncurteLinkController {
       return res.status(400).json(createEncurteLink);
     }
 
-    return res.status(200).json({ sucess: true, encutedLink: `${protocol}://${hostname}${port && port !== '80' ? `:${port}` : ''}/${createEncurteLink}` });
+    return res.status(200).json({ sucess: true, encutedLink: `${protocol}://${hostname}/${createEncurteLink}` });
   }
 
   async redirect(req, res) {
@@ -29,10 +28,10 @@ class EncurteLinkController {
     const originalLink = await EncurteLink.searchByCode(code);
 
     if (originalLink.err && originalLink.err === true) {
-      return res.status(400).send(originalLink);
+      return res.status(404).send(originalLink);
     }
 
-    return res.status(200).redirect(originalLink);
+    return res.status(302).redirect(originalLink);
   }
 }
 

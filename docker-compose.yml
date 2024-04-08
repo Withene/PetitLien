@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   db:
+    container_name: db_project
     image: postgres:latest
     restart: always
     env_file:
@@ -13,6 +14,23 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  api:
+    container_name: redirect_api
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "80:8000"
+    env_file:
+      - .env
+    environment:
+      DB_HOST:  db_project
+      DB_USER: ${DB_USER}
+      DB_PASS:  ${DB_PASS}
+      DB_NAME:  ${DB_NAME}
+      APP_SECRET:  ${APP_SECRET}
+      PORT:  ${PORT}
 
 volumes:
   postgres_data:
